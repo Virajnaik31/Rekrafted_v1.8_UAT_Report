@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Report - chrome › tests\siteAdmin\productMaster\productMaster.spec.ts › Product Master - End-to-End Creation, Specifications, Pricing Validation, IMEI &amp; Bulk Actions [PASSED]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-border: #24324f;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --accent: #6366f1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 32px 20px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .status-pass {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+    .status-fail {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    .meta-info {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 20px;
+    }
+    .meta-info strong {
+      color: var(--text);
+    }
+    /* Error diagnostics banner */
+    .error-banner {
+      background: #1c141d;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 14px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .error-header {
+      background: rgba(239, 68, 68, 0.1);
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .error-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .error-icon {
+      font-size: 22px;
+    }
+    .error-title h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fca5a5;
+    }
+    .error-subtitle {
+      font-size: 13px;
+      color: #f87171;
+    }
+    .error-body {
+      padding: 20px;
+    }
+    .error-message-box pre {
+      background: #090c15;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: #fecaca;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+    }
+    .error-details {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .error-details summary {
+      cursor: pointer;
+      font-weight: 500;
+      color: #f87171;
+      padding: 4px 0;
+    }
+    .stack-trace {
+      margin-top: 10px;
+      background: #090c15;
+      border: 1px solid var(--card-border);
+      padding: 14px;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .card-failure {
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: #1a131b;
+    }
+    .card-failure .card-header {
+      border-bottom: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+    }
+    .card, .video-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .video-card {
+      margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .card-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: capitalize;
+    }
+    .badge {
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+    }
+    .error-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+    .video-badge {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent);
+    }
+    .filename {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .img-container {
+      padding: 12px;
+      background: #070a12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+    }
+    .img-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      transition: transform 0.2s ease;
+    }
+    .img-container img:hover {
+      transform: scale(1.02);
+    }
+    .video-container {
+      padding: 16px;
+      background: #070a12;
+      display: flex;
+      justify-content: center;
+    }
+    video {
+      width: 100%;
+      max-height: 540px;
+      border-radius: 8px;
+      outline: none;
+      background: #000;
+    }
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 36px;
+      background: var(--card-bg);
+      border: 1px dashed var(--card-border);
+      border-radius: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>chrome › tests\siteAdmin\productMaster\productMaster.spec.ts › Product Master - End-to-End Creation, Specifications, Pricing Validation, IMEI &amp; Bulk Actions <span class="status-badge status-pass">PASSED</span></h1>
+        <p class="meta-info" style="margin-top: 6px;">Generated on: <strong>27/10/2026, 7:34:53 am</strong></p>
+      </div>
+      <div class="meta-info">
+        <div>Duration: <strong>68.6s</strong></div>
+        <div>Screenshots: <strong>15</strong></div>
+      </div>
+    </header>
+
+    
+
+    
+    <div class="video-card">
+      <div class="card-header">
+        <span class="badge video-badge">Video Recording</span>
+        <h3>Full Test Execution Playback</h3>
+        <span class="filename">productMaster_video.webm</span>
+      </div>
+      <div class="video-container">
+        <video controls preload="metadata">
+          <source src="productMaster_video.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  
+
+    <div class="grid">
+      
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>product list</h3>
+          <span class="filename">screenshots/01_product_list.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/01_product_list.png" target="_blank">
+            <img src="screenshots/01_product_list.png" alt="product list" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>category selected</h3>
+          <span class="filename">screenshots/02_category_selected.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/02_category_selected.png" target="_blank">
+            <img src="screenshots/02_category_selected.png" alt="category selected" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>display category selected</h3>
+          <span class="filename">screenshots/03_display_category_selected.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/03_display_category_selected.png" target="_blank">
+            <img src="screenshots/03_display_category_selected.png" alt="display category selected" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>basic info filled</h3>
+          <span class="filename">screenshots/04_basic_info_filled.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/04_basic_info_filled.png" target="_blank">
+            <img src="screenshots/04_basic_info_filled.png" alt="basic info filled" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>attributes filled</h3>
+          <span class="filename">screenshots/05_attributes_filled.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/05_attributes_filled.png" target="_blank">
+            <img src="screenshots/05_attributes_filled.png" alt="attributes filled" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>cod and display configured</h3>
+          <span class="filename">screenshots/06_cod_and_display_configured.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/06_cod_and_display_configured.png" target="_blank">
+            <img src="screenshots/06_cod_and_display_configured.png" alt="cod and display configured" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>offer price higher than mrp</h3>
+          <span class="filename">screenshots/07_offer_price_higher_than_mrp.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/07_offer_price_higher_than_mrp.png" target="_blank">
+            <img src="screenshots/07_offer_price_higher_than_mrp.png" alt="offer price higher than mrp" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>sku and stock filled</h3>
+          <span class="filename">screenshots/08_sku_and_stock_filled.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/08_sku_and_stock_filled.png" target="_blank">
+            <img src="screenshots/08_sku_and_stock_filled.png" alt="sku and stock filled" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>IMEI filled</h3>
+          <span class="filename">screenshots/09_IMEI_filled.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/09_IMEI_filled.png" target="_blank">
+            <img src="screenshots/09_IMEI_filled.png" alt="IMEI filled" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>product image uploaded</h3>
+          <span class="filename">screenshots/10_product_image_uploaded.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/10_product_image_uploaded.png" target="_blank">
+            <img src="screenshots/10_product_image_uploaded.png" alt="product image uploaded" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>products report search</h3>
+          <span class="filename">screenshots/11_products_report_search.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/11_products_report_search.png" target="_blank">
+            <img src="screenshots/11_products_report_search.png" alt="products report search" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>after bulk deactivate</h3>
+          <span class="filename">screenshots/12_after_bulk_deactivate.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/12_after_bulk_deactivate.png" target="_blank">
+            <img src="screenshots/12_after_bulk_deactivate.png" alt="after bulk deactivate" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>after bulk activate</h3>
+          <span class="filename">screenshots/13_after_bulk_activate.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/13_after_bulk_activate.png" target="_blank">
+            <img src="screenshots/13_after_bulk_activate.png" alt="after bulk activate" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>bulk delete success modal</h3>
+          <span class="filename">screenshots/14_bulk_delete_success_modal.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/14_bulk_delete_success_modal.png" target="_blank">
+            <img src="screenshots/14_bulk_delete_success_modal.png" alt="bulk delete success modal" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>after bulk delete table updated</h3>
+          <span class="filename">screenshots/15_after_bulk_delete_table_updated.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/15_after_bulk_delete_table_updated.png" target="_blank">
+            <img src="screenshots/15_after_bulk_delete_table_updated.png" alt="after bulk delete table updated" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</body>
+</html>

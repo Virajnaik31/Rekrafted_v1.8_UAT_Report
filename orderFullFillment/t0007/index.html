@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Report - chrome › tests\orderFullFillment\t0007.spec.ts › Order Fulfillment T0007 - Confirmed to Ready to Ship via Manual Booking &amp; Transition to Delivered [PASSED]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-border: #24324f;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --accent: #6366f1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 32px 20px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .status-pass {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+    .status-fail {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    .meta-info {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 20px;
+    }
+    .meta-info strong {
+      color: var(--text);
+    }
+    /* Error diagnostics banner */
+    .error-banner {
+      background: #1c141d;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 14px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .error-header {
+      background: rgba(239, 68, 68, 0.1);
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .error-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .error-icon {
+      font-size: 22px;
+    }
+    .error-title h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fca5a5;
+    }
+    .error-subtitle {
+      font-size: 13px;
+      color: #f87171;
+    }
+    .error-body {
+      padding: 20px;
+    }
+    .error-message-box pre {
+      background: #090c15;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: #fecaca;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+    }
+    .error-details {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .error-details summary {
+      cursor: pointer;
+      font-weight: 500;
+      color: #f87171;
+      padding: 4px 0;
+    }
+    .stack-trace {
+      margin-top: 10px;
+      background: #090c15;
+      border: 1px solid var(--card-border);
+      padding: 14px;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .card-failure {
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      background: #1a131b;
+    }
+    .card-failure .card-header {
+      border-bottom: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+    }
+    .card, .video-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .video-card {
+      margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .card-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: capitalize;
+    }
+    .badge {
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+    }
+    .error-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+    .video-badge {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent);
+    }
+    .filename {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .img-container {
+      padding: 12px;
+      background: #070a12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+    }
+    .img-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      transition: transform 0.2s ease;
+    }
+    .img-container img:hover {
+      transform: scale(1.02);
+    }
+    .video-container {
+      padding: 16px;
+      background: #070a12;
+      display: flex;
+      justify-content: center;
+    }
+    video {
+      width: 100%;
+      max-height: 540px;
+      border-radius: 8px;
+      outline: none;
+      background: #000;
+    }
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 36px;
+      background: var(--card-bg);
+      border: 1px dashed var(--card-border);
+      border-radius: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>chrome › tests\orderFullFillment\t0007.spec.ts › Order Fulfillment T0007 - Confirmed to Ready to Ship via Manual Booking &amp; Transition to Delivered <span class="status-badge status-pass">PASSED</span></h1>
+        <p class="meta-info" style="margin-top: 6px;">Generated on: <strong>27/10/2026, 12:55:13 pm</strong></p>
+      </div>
+      <div class="meta-info">
+        <div>Duration: <strong>75.7s</strong></div>
+        <div>Screenshots: <strong>10</strong></div>
+      </div>
+    </header>
+
+    
+
+    
+    <div class="video-card">
+      <div class="card-header">
+        <span class="badge video-badge">Video Recording</span>
+        <h3>Full Test Execution Playback</h3>
+        <span class="filename">t0007_video.webm</span>
+      </div>
+      <div class="video-container">
+        <video controls preload="metadata">
+          <source src="t0007_video.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  
+
+    <div class="grid">
+      
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>01 status dropdown Confirmed selected</h3>
+          <span class="filename">screenshots/01_01_status_dropdown_Confirmed_selected.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/01_01_status_dropdown_Confirmed_selected.png" target="_blank">
+            <img src="screenshots/01_01_status_dropdown_Confirmed_selected.png" alt="01 status dropdown Confirmed selected" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>02 after Pending to Confirmed submit</h3>
+          <span class="filename">screenshots/02_02_after_Pending_to_Confirmed_submit.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/02_02_after_Pending_to_Confirmed_submit.png" target="_blank">
+            <img src="screenshots/02_02_after_Pending_to_Confirmed_submit.png" alt="02 after Pending to Confirmed submit" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>03 order detail page orderId extracted</h3>
+          <span class="filename">screenshots/03_03_order_detail_page_orderId_extracted.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/03_03_order_detail_page_orderId_extracted.png" target="_blank">
+            <img src="screenshots/03_03_order_detail_page_orderId_extracted.png" alt="03 order detail page orderId extracted" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>04 Request for Invoicing SKU visible</h3>
+          <span class="filename">screenshots/04_04_Request_for_Invoicing_SKU_visible.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/04_04_Request_for_Invoicing_SKU_visible.png" target="_blank">
+            <img src="screenshots/04_04_Request_for_Invoicing_SKU_visible.png" alt="04 Request for Invoicing SKU visible" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>05 IMEI retrieved or auto stocked</h3>
+          <span class="filename">screenshots/05_05_IMEI_retrieved_or_auto_stocked.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/05_05_IMEI_retrieved_or_auto_stocked.png" target="_blank">
+            <img src="screenshots/05_05_IMEI_retrieved_or_auto_stocked.png" alt="05 IMEI retrieved or auto stocked" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>07 after IMEI submit</h3>
+          <span class="filename">screenshots/06_07_after_IMEI_submit.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/06_07_after_IMEI_submit.png" target="_blank">
+            <img src="screenshots/06_07_after_IMEI_submit.png" alt="07 after IMEI submit" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>08 Ready to Ship invoice and PDF filled</h3>
+          <span class="filename">screenshots/07_08_Ready_to_Ship_invoice_and_PDF_filled.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/07_08_Ready_to_Ship_invoice_and_PDF_filled.png" target="_blank">
+            <img src="screenshots/07_08_Ready_to_Ship_invoice_and_PDF_filled.png" alt="08 Ready to Ship invoice and PDF filled" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>09 after Ready to Ship submit</h3>
+          <span class="filename">screenshots/08_09_after_Ready_to_Ship_submit.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/08_09_after_Ready_to_Ship_submit.png" target="_blank">
+            <img src="screenshots/08_09_after_Ready_to_Ship_submit.png" alt="09 after Ready to Ship submit" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>10 status Delivered selected</h3>
+          <span class="filename">screenshots/09_10_status_Delivered_selected.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/09_10_status_Delivered_selected.png" target="_blank">
+            <img src="screenshots/09_10_status_Delivered_selected.png" alt="10 status Delivered selected" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+
+      <div class="card ">
+        <div class="card-header">
+          <span class="badge">Step Screenshot</span>
+          <h3>11 final Delivered confirmed</h3>
+          <span class="filename">screenshots/10_11_final_Delivered_confirmed.png</span>
+        </div>
+        <div class="img-container">
+          <a href="screenshots/10_11_final_Delivered_confirmed.png" target="_blank">
+            <img src="screenshots/10_11_final_Delivered_confirmed.png" alt="11 final Delivered confirmed" loading="lazy" />
+          </a>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</body>
+</html>
