@@ -1605,7 +1605,7 @@ html, body {
   // Application State
   const state = {
     data: window.MASTER_DATA || { stats: {}, reports: [] },
-    activeTab: 'CMT', // 'CMT', 'orderFulFilmentChecklist', 'orderFulfilment', 'superadmin', 'FAILED', 'ALL'
+    activeTab: 'orderFullFillment', // 'CMT', 'orderFulFilmentChecklist', 'orderFulfilment', 'superadmin', 'FAILED', 'ALL'
     statusFilter: 'ALL', // 'ALL', 'PASSED', 'FAILED'
     sidebarGrouping: 'FOLDERWISE', // 'FOLDERWISE', 'FLAT'
     searchQuery: '',
@@ -1697,7 +1697,7 @@ html, body {
     setupEventListeners();
 
     // Select default tab: CMT
-    setActiveTab('CMT');
+    setActiveTab('orderFullFillment');
   }
 
   // Render Top Stats
